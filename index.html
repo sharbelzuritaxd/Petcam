@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petcam - Smart Pet Camera</title>
+    <style>
+        :root {
+            --primary-color: #f770c4;
+            --bg-color: #55d6c1; 
+            --text-color: #333;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .phone-container {
+            width: 350px;
+            height: 700px;
+            background-color: var(--card-bg);
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 8px solid #222;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .camera-feed {
+            background-color: #000;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .recording-dot {
+            height: 10px;
+            width: 10px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .daily-report {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .report-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Navegación de pestañas */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background: #f1f1f1;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #666;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Contenido de las pestañas */
+        .tab-content {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border: 2px dashed var(--primary-color);
+        }
+
+        /* Animación suave al cambiar de pestaña */
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        <div class="header">
+            Petcam
+        </div>
+        
+        <div class="camera-feed">
+            <div>
+                <span class="recording-dot"></span> AI Camera Active
+            </div>
+        </div>
+
+        <div class="daily-report">
+            <div class="report-title">Daily Report</div>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'food')">Food</button>
+                <button class="tab-btn" onclick="openTab(event, 'water')">Water</button>
+                <button class="tab-btn" onclick="openTab(event, 'sleep')">Sleep</button>
+                <button class="tab-btn" onclick="openTab(event, 'activity')">Activity</button>
+            </div>
+
+            <!-- Contenido generado en base a la presentación -->
+            <div id="food" class="tab-content active">
+                <h3>Food Checked</h3>
+                <div class="metric-value">2 Bowls</div>
+                <p>Your pet ate at 8:00 AM and 2:00 PM.</p>
+            </div>
+
+            <div id="water" class="tab-content">
+                <h3>Water Level</h3>
+                <div class="metric-value">Good</div>
+                <p>Water bowl is currently full.</p>
+            </div>
+
+            <div id="sleep" class="tab-content">
+                <h3>Sleep Monitored</h3>
+                <div class="metric-value">5 Hours</div>
+                <p>Deep sleep detected during the morning.</p>
+            </div>
+
+            <div id="activity" class="tab-content">
+                <h3>Activity</h3>
+                <div class="metric-value">Playful</div>
+                <p>Motion detected near the living room window.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para manipular el DOM y cambiar las pestañas
+        function openTab(evt, metricName) {
+            // 1. Ocultar todos los elementos con la clase "tab-content"
+            let tabContent = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+                tabContent[i].classList.remove("active");
+            }
+
+            // 2. Quitar la clase "active" de todos los botones "tab-btn"
+            let tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+
+            // 3. Mostrar la pestaña actual y añadir la clase "active" al botón que se hizo clic
+            document.getElementById(metricName).style.display = "block";
+            // Forzamos un pequeño reflow para que la animación se reinicie cada vez
+            void document.getElementById(metricName).offsetWidth; 
+            document.getElementById(metricName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>
